@@ -7,7 +7,7 @@ Generate plots for synthetic three-state force spectroscopy model.
 import argparse
 
 import bhmm
-from bhmm.util import testsystems
+import bhmm.util.testsystems as testsystems
 from bhmm.util.analysis import generate_latex_table
 
 
@@ -36,7 +36,7 @@ def run(nstates, nsamples):
 
     # Generate MLHMM.
     print "Generating MLHMM..."
-    estimator = bhmm.MLHMM(O, nstates)
+    estimator = bhmm.MLHMM(O, nstates, stationary=True)
 
     print "Initial guess:"
     print str(estimator.hmm.output_model)
@@ -61,7 +61,7 @@ def run(nstates, nsamples):
 
     # Initialize BHMM with MLHMM model.
     print "Sampling models from BHMM..."
-    sampler = bhmm.BHMM(O, nstates, initial_model=mle)
+    sampler = bhmm.BHMM(O, nstates, initial_model=mle, stationary=True)
     bhmm_models = sampler.sample(nsamples=nsamples, save_hidden_state_trajectory=False)
 
     # Generate a sample saving a hidden state trajectory.

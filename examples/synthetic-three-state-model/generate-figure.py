@@ -64,7 +64,7 @@ def analyze_data(O, nstates, nsamples=1000, nobservations=None):
 
     # Generate MLHMM.
     print "Generating MLHMM..."
-    estimator = bhmm.MLHMM(O, nstates)
+    estimator = bhmm.MLHMM(O, nstates, stationary=True)
 
     print "Initial guess:"
     print str(estimator.hmm.output_model)
@@ -89,7 +89,7 @@ def analyze_data(O, nstates, nsamples=1000, nobservations=None):
 
     # Initialize BHMM with MLHMM model.
     print "Sampling models from BHMM..."
-    sampler = bhmm.BHMM(O, nstates, initial_model=mle)
+    sampler = bhmm.BHMM(O, nstates, initial_model=mle, stationary=True)
     bhmm_models = sampler.sample(nsamples=nsamples, save_hidden_state_trajectory=False)
 
     # Generate a sample saving a hidden state trajectory.
@@ -164,6 +164,8 @@ def generate_latex_table(true_hmm, sampled_hmm_list, conf=0.95, dt=1, time_unit=
             table += '\t\tEquilibrium probability '
         table += '\t\t& $\pi_{%d}$ & $%0.3f$' % (i+1, true_hmm.stationary_distribution[i])
         for sampled_hmm in sampled_hmm_list:
+            print sampled_hmm
+            print 'trying to find distribution mean'
             p = sampled_hmm.stationary_distribution_mean
             p_lo, p_hi = sampled_hmm.stationary_distribution_conf
             table += ' & $%0.3f_{\:%0.3f}^{\:%0.3f}$ ' % (p[i], p_lo[i], p_hi[i])
