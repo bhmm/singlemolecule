@@ -30,7 +30,7 @@ def run(nstates, nsamples):
 
     # Initialize MLHMM.
     print "Initializing MLHMM with "+str(nstates)+" states."
-    estimator = bhmm.MLHMM(O, nstates)
+    estimator = bhmm.MLHMM(O, nstates, stationary=True)
 
     # Plot initial guess.
     plots.plot_state_assignments(estimator.hmm, None, O[0], time_units=time_units, obs_label=obs_label, tau=tau,
